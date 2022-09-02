@@ -1,6 +1,6 @@
 ---
 title: "Git, GitHub & Ocean Acidification"
-author: "<your name and u number>"
+author: "<Shiqi Hu and u7457284>"
 date: "`r Sys.Date()`"
 output: 
   bookdown::html_document2:
