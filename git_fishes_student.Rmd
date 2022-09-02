@@ -130,7 +130,7 @@ Second, drop out irrelevant columns and check that there are no spelling issues 
 
 ```{r summaryTab}
 # Drop irrelevant columns
-
+OA_data <- OA %>% select(species, treatment, animal_id, activity)
 # Check spelling in species and treatment but also generate a summary table
 
 # Use flextable to render the summary table in a tidy format
