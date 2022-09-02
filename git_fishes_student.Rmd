@@ -122,7 +122,7 @@ First, write some code below to remove missing data
 ```{r, rmMiss}
 # Code to removing missing data from the `OA_activitydat_20190302_BIOL3207.csv` data frame. 
 library(tidyverse)
-OA <- data %>% filter(!(is.na(activity)))
+OA <- data %>% filter(!(is.na(activity))) %>% filter(!(is.na(animal_id)))
 
 ```
 
