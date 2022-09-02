@@ -106,7 +106,7 @@ Let's say that you added a new data folder that was inside an output folder (i.e
 
 ```{r, write, eval = FALSE, echo=TRUE}
 
-path <- "replace this text with your relative path"
+path <- "output/OA_activitydat_20190302_BIOL3207.csv"
 
 write_csv(data, file = path)
 
@@ -121,6 +121,8 @@ First, write some code below to remove missing data
 
 ```{r, rmMiss}
 # Code to removing missing data from the `OA_activitydat_20190302_BIOL3207.csv` data frame. 
+library(tidyverse)
+OA <- data %>% filter(!(is.na(activity)))
 
 ```
 
