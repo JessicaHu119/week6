@@ -54,7 +54,7 @@ This task involves cloning your repository on your computer. Where should we pla
 
 ```{r, answer1, echo=FALSE, eval = FALSE}
 
-##  hhhhhh
+##  GitHub is not a very good backup, it doesn't automatically back up my updates in real time. Whenever I make a change, I have to manually go to GitHub Desktop to update it and then upload it to the web version. Also, it doesn't keep every version of my changes. In summary, we can't rely on GitHub as a backup.
 
 ```
 
@@ -122,7 +122,7 @@ First, write some code below to remove missing data
 ```{r, rmMiss}
 # Code to removing missing data from the `OA_activitydat_20190302_BIOL3207.csv` data frame. 
 library(tidyverse)
-OA <- data %>% filter(!(is.na(activity))) %>% filter(!(is.na(animal_id)))
+OA <- data %>% filter(!(is.na(activity))) 
 
 ```
 
@@ -132,8 +132,16 @@ Second, drop out irrelevant columns and check that there are no spelling issues 
 # Drop irrelevant columns
 OA_data <- OA %>% select(species, treatment, animal_id, activity)
 # Check spelling in species and treatment but also generate a summary table
-
+library(tidyverse)
+OA_data %>% count(species,treatment)
 # Use flextable to render the summary table in a tidy format
+OA_new <- OA_data %>%group_by(species, treatment)%>%summarise(mean=mean(activity), sd=sd(activity), number=length(activity))
+ft <- flextable(OA_new)
+ft <- theme_vanilla(ft)
+ft <- color(ft, part = "body",color = "#666666")
+ft <- set_caption(ft, caption = "Mean, Standard Error And The Sample Sizes")
+ft
+# Can be calculated with the new code : tapply(OA_data$activity,INDEX=OA_data$species,FUN=mean), tapply(OA_data$activity,INDEX=OA_data$species,FUN=sd)
 
 ```
 
