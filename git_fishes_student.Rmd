@@ -106,7 +106,7 @@ Let's say that you added a new data folder that was inside an output folder (i.e
 
 ```{r, write, eval = FALSE, echo=TRUE}
 
-path <- "output/OA_activitydat_20190302_BIOL3207.csv"
+path <- "./output/data/change"
 
 write_csv(data, file = path)
 
@@ -150,7 +150,7 @@ ft
 >**Question 5**: The new version of your Rmarkdown file should now be up on *GitHub*. In the browser window click on your most recent commit. Have a look at the file versioning system. You will notice two files side-by-side. Describe what you notice is being presented online. What do the red and green highlights mean?
 
 ```{r answer5, echo=TRUE, eval=FALSE}
-## Write your answer here....remember to use '#" in front of your text.
+## A light red highlight indicates that this paragraph has been modified, a dark red highlight indicates that the content inside has been removed, and a green highlight indicates that I have added something, perhaps code or some text description, etc.
 ```
 
 # **Task 5**
@@ -161,7 +161,7 @@ Ignoring figures can be important because they take up quite a lot of space in y
 
 ```{r, prettyfig, fig.align='center', fig.cap="add a legend here"}
 # ggplot figure showing mean activity for each treatment (Control, OA) for each species.
-
+ggplot(OA_data, mapping = aes(x = species,y=activity,fill=treatment)) + geom_boxplot() 
 
 ```
 
@@ -173,6 +173,7 @@ Now that you have the figure you may also want to write / save it as a separate 
 
 ```{r, savefig}
 # Use ggsave to save the figure
+ggsave("./output/figures/difference.png",width = 10, height = 4)
 
 ```
 
