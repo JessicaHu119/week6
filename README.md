@@ -1,8 +1,7 @@
 # week6
 workshop
-<<<<<<< HEAD
 
-There are no conflicts
+There is no conflicts
 
 make a conflict :)
 
