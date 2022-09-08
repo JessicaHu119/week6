@@ -1,0 +1,1 @@
+"0","ggplot(penguins_data, mapping = aes(y = body_mass_g,x = sex,fill = species)) + geom_boxplot() + geom_jitter(width=0.2, height=0) + facet_wrap(~species)"

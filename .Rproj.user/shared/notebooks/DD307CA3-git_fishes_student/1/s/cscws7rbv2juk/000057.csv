@@ -1,0 +1,2 @@
+"0","# Can be calculated with the new code : tapply(OA_data$activity,INDEX=OA_data$species,FUN=mean), tapply(OA_data$activity,INDEX=OA_data$species,FUN=sd)"
+"0",""

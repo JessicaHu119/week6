@@ -1,0 +1,5 @@
+"0","# Drop irrelevant columns"
+"0","OA_data <- OA %>% select(species, treatment, animal_id, activity)"
+"0","# Check spelling in species and treatment but also generate a summary table"
+"0","library(tidyverse)"
+"0","OA_data %>% count(species,treatment)"

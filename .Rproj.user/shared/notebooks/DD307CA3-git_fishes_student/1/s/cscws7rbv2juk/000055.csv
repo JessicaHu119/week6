@@ -1,0 +1,8 @@
+"0","# Use flextable to render the summary table in a tidy format"
+"0","OA_new <- OA_data %>%group_by(species, treatment)%>%summarise(mean=mean(activity), sd=sd(activity), number=length(activity))"
+"2","`summarise()` has grouped output by 'species'. You can override using the `.groups` argument."
+"0","ft <- flextable(OA_new)"
+"0","ft <- theme_vanilla(ft)"
+"0","ft <- color(ft, part = ""body"",color = ""#666666"")"
+"0","ft <- set_caption(ft, caption = ""Mean, Standard Error And The Sample Sizes"")"
+"0","ft"

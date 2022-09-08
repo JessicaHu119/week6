@@ -1,0 +1,2 @@
+"0","penguins_data <- penguins %>% filter(!(is.na(sex)))"
+"0","ggplot(penguins_data, mapping = aes(y = body_mass_g,x = species,fill=sex))  + geom_boxplot() + geom_jitter(width=0.2, height=0) + facet_wrap(~sex)"

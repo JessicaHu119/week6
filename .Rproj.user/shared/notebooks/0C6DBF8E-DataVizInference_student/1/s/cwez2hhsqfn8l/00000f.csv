@@ -1,0 +1,2 @@
+"0","ggplot(data = penguins, mapping = aes(x = body_mass_g, y = bill_depth_mm)) +"
+"0","  geom_point() + geom_smooth(method='lm')"

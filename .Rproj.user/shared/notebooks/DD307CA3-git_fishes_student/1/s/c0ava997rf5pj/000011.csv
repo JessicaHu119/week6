@@ -1,0 +1,4 @@
+"0","# Code to removing missing data from the `OA_activitydat_20190302_BIOL3207.csv` data frame. "
+"0","library(tidyverse)"
+"0","OA <- data %>% filter(!(is.na(activity))) "
+"0",""
