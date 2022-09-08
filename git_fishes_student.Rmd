@@ -119,16 +119,15 @@ We're ready for some coding! Lets do some coding and wrangling of the `OA_activi
 
 First, write some code below to remove missing data
 
-```{r, rmMiss}
+```{r,rMiss,eval = FALSE, echo=TRUE}
 # Code to removing missing data from the `OA_activitydat_20190302_BIOL3207.csv` data frame. 
 library(tidyverse)
 OA <- data %>% filter(!(is.na(activity))) 
-
 ```
 
 Second, drop out irrelevant columns and check that there are no spelling issues in `species` and `treatment`. Create a table of summary data that includes: 1) the mean, 2) the standard error and 3) the sample sizes of unique fish across ALL six fish species for each treatment. This will also help you detect any spelling errors. You can use the R package [`flextable`](https://ardata-fr.github.io/flextable-book/) to print out the results in a nice neat format! If you haven't heard about `flextable` spend 10 or so minutes having a look at it's functionality. It's incredible! You'll use this for tables throughout.
 
-```{r summaryTab}
+```{r summaryTab,eval = FALSE, echo=TRUE}
 # Drop irrelevant columns
 OA_data <- OA %>% select(species, treatment, animal_id, activity)
 # Check spelling in species and treatment but also generate a summary table
@@ -160,7 +159,7 @@ Ignoring figures can be important because they take up quite a lot of space in y
 
 `.gitignore` files are used to control what *Git* tracks and what it ignores. You should have created a new folder path: `output/figures/`. Write some code now to create a pretty figure using ggplot that shows the difference between control and acidification treatments for each of the fish species in the data set:
 
-```{r, prettyfig, fig.align='center', fig.cap="add a legend here"}
+```{r, prettyfig, fig.align='center', fig.cap="add a legend here",eval = FALSE, echo=TRUE}
 # ggplot figure showing mean activity for each treatment (Control, OA) for each species.
 ggplot(OA_data, mapping = aes(x = treatment,y=activity,fill=treatment)) + geom_boxplot() + facet_wrap(~species)
 
@@ -168,7 +167,7 @@ ggplot(OA_data, mapping = aes(x = treatment,y=activity,fill=treatment)) + geom_b
 
 **Stretch Task**: The Clark et al. 2020 paper plots some pretty pictures on their figures. You have access to a folder called "pics/". Add the pics of the difference species from the "pics/" folder to your new plot. Explore the function `annotation_raster()` which might help you achieve this goal.
 
-```{r}
+```{r, pics, eval = FALSE, echo=TRUE}
 acantho <- readPNG("./data/pics/acantho.png")
 ambon <- readPNG("./data/pics/ambon.png")
 chromis <- readPNG("./data/pics/chromis.png")
@@ -182,7 +181,7 @@ Note the code chunk used to make the figure. It has a `fig.cap` argument. That m
 
 Now that you have the figure you may also want to write / save it as a separate file. Use `ggsave` function to save the figure(s) to your new `output/figures/`:
 
-```{r, savefig}
+```{r, savefig, eval = FALSE, echo=TRUE}
 # Use ggsave to save the figure
 ggsave("./output/figures/difference.png",width = 10, height = 4)
 
@@ -207,7 +206,7 @@ This task involves teaming up with a collaborator. Exchange *GitHub* username de
 
 Now, lets create a new figure in the code block below that simplifies the one produced in **Task 5**. Instead of all species, lets just plot three of the species (chromis, lemon, and acantho). In the figure code chunk make sure you add the necessary arguments (e.g., `fig.cap`) so that you can refer to Figure \@ref(fig:collabFig).
 
-```{r, collabFig, echo=TRUE, eval=TRUE}
+```{r, collabFig, echo=TRUE, eval=FALSE}
 # You want to make changes to your collaborators figure in Task 5. Maybe you want to create a figure that focuses only on three fish species instead of the 5. More specifically, chromis, lemon, and acantho. Add code here to revise their figure to do that.
 OA_sim <- OA_data %>% filter(OA_data$species==c("chromis","lemon","acantho")) %>%  ggplot(OA_data, mapping = aes(x = species,y=activity,fill=treatment)) + geom_boxplot() +labs(title = "collabFig") + annotation_raster(acantho, 0.5, 1.5, 40, 50, interpolate = FALSE) + annotation_raster(chromis, 1.5, 2.5, 40, 50, interpolate = FALSE) + annotation_raster(lemon, 2.5, 3.5, 40, 50, interpolate = FALSE)
 OA_sim
@@ -244,14 +243,98 @@ There's not too much to do in this task on the coding front! You just need to cr
 # **Task 9**
 Here, run some statistical tests to determine, for each species, whether the control vs high $CO^2$ treatments differ significantly from each other and in what direction. Provide the difference in means, their 95% confidence intervals, t-statistic, df and p-value. 
 
->**Stretch Task**: You can of course do this for each species seperately, but those who want a challenge, think about how you might use a loop or even some wrangling methods you have already learnt from the tidyverse to run these tests across all 6 species in a single block of code. If you're familiar with functions, you can even think about writing your own function! All these strategies will avoid having to copy and paste large chunks of code. If you're repeating anything, writing functions and loops are good ways to simplify.
+```{r,t-test,eval = FALSE, echo=TRUE}
+#Ambon
+OA_1 <- OA_data %>% filter(species=="ambon")
+test1 <- t.test(OA_1$activity[which(OA_data$treatment == "CO2")], OA_1$activity[which(OA_data$treatment == "control")])
 
-```{r, stats, echo=TRUE, eval=TRUE}
-# Add your code here
+#Acantho
+OA_2 <- OA_data %>% filter(species=="acantho")
+test2 <- t.test(OA_2$activity[which(OA_data$treatment == "CO2")], OA_2$activity[which(OA_data$treatment == "control")])
+
+#Chromis
+OA_3 <- OA_data %>% filter(species=="chromis")
+OA_3C <- OA_3 %>% filter(treatment=="CO2")
+OA_3t <- OA_3 %>% filter(treatment=="control")
+test3 <- t.test(OA_3C$activity, OA_3t$activity)
+
+#Lemon
+OA_4 <- OA_data %>% filter(species=="lemon")
+test4 <- t.test(OA_4$activity[which(OA_data$treatment == "CO2")], OA_4$activity[which(OA_data$treatment == "control")])
+
+#Whitedams
+OA_5 <- OA_data %>% filter(species=="whitedams")
+test5 <- t.test(OA_5$activity[which(OA_data$treatment == "CO2")], OA_5$activity[which(OA_data$treatment == "control")])
+
+#Humbug
+OA_6CO2 <- OA_data %>% filter(species=="humbug" & treatment=="CO2") %>% select(activity)
+OA_6C <- OA_6 %>% filter(species=="humbug"&treatment=="control")%>% select(activity)
+test6 <- t.test(OA_6CO2, OA_6C)
+
+#mean difference
+mean.difference <- c(test1$null.value,test2$null.value,test3$null.value,test4$null.value,test5$null.value,test6$null.value)
+
+#min.confidence
+min.confidence <- c(min(test1$conf.int),min(test2$conf.int),min(test3$conf.int),min(test4$conf.int),min(test5$conf.int),min(test6$conf.int))
+
+#max.confidence
+max.confidence <- c(max(test1$conf.int),max(test2$conf.int),max(test3$conf.int),max(test4$conf.int), max(test5$conf.int), max(test6$conf.int))
+
+#t-statistic                   
+t.statistic <- c(test1$statistic,test2$statistic,test3$statistic,test4$statistic,test5$statistic,test6$statistic)
+
+#df
+df <- c(test1$parameter,test2$parameter,test3$parameter,test4$parameter,test5$parameter,test6$parameter)
+
+#p value
+p.value <- c(test1$p.value, test2$p.value, test3$p.value, test4$p.value, test5$p.value, test6$p.value)
+
+test <- data.frame(species, mean.difference, min.confidence, max.confidence,  t.statistic, df, p.value)
 ```
 
-```{r, table1, echo=TRUE, eval=TRUE, tab.cap = "write a caption here"}
+
+
+>**Stretch Task**: You can of course do this for each species seperately, but those who want a challenge, think about how you might use a loop or even some wrangling methods you have already learnt from the tidyverse to run these tests across all 6 species in a single block of code. If you're familiar with functions, you can even think about writing your own function! All these strategies will avoid having to copy and paste large chunks of code. If you're repeating anything, writing functions and loops are good ways to simplify.
+
+```{r, stats, echo=TRUE, eval=FALSE}
+# write afunctions and loops
+n_reps <- 6
+data_species <- c('acantho','ambon','chromis','humbug','lemon','whitedams')
+difference <- c()
+min.conf <- c()
+max.conf <- c()
+sta <- c()
+df <- c()
+pval <- c()
+
+for (i in 1:n_reps) {
+  OA_control <- OA_data %>% filter(species == data_species[i] & treatment == "control")
+  OA_CO2 <- OA_data %>% filter(species == data_species[i] & treatment == "CO2")
+  difference[i] <- abs((OA_data %>% filter(species==data_species[i] & treatment== "control") %>% summarise(mean = mean(activity)))-(OA_data %>% filter(species==data_species[i]& treatment== "CO2") %>% summarise(mean = mean(activity))))
+  min.conf[i] <- min(t.test(OA_control$activity,OA_CO2$activity)$conf.int)
+  max.conf[i] <- max(t.test(OA_control$activity,OA_CO2$activity)$conf.int)
+  sta[i] <- t.test(OA_control$activity,OA_CO2$activity)$statistic
+  df[i] <- t.test(OA_control$activity,OA_CO2$activity)$parameter
+  pval[i] <- t.test(OA_control$activity,OA_CO2$activity)$p.value
+}
+difference <- unlist(difference)
+min.conf 
+max.conf
+sta 
+df 
+pval 
+test_loop <- data_frame(data_species,difference,min.conf,max.conf,sta,df,pval)
+```
+
+```{r, table1, echo=TRUE, eval=FALSE, tab.cap = "difference in means, 95% confidence intervals, t-statistic, df and p-value"}
 # Using the resulting object created above, which should be a table with all the summary statistics, t, df and p-value for each species create a table. Note that there is a tab.cap argument in the chunk arguments. Write a caption here. 
+
+test_loop <- data_frame(data_species,difference,min.conf,max.conf,sta,df,pval)
+table1 <- flextable(test_loop)
+table1 <- theme_vanilla(table1)
+table1 <- color(table1, part = "body",color = "#666666")
+table1 <- set_caption(table1, caption = "difference in means, 95% confidence intervals, t-statistic, df and p-value")
+table1
 ```
 
 Now that you have a table, you can reference it within a document. For example, you can make a call to Table \@ref(tab:table1) by referring to the name of the code chunk. When you knit the html it will create a hyperlink to your table and insert a legend above the table for you. How cool is that!?
@@ -264,7 +347,7 @@ Moving forward on that you can also add in an object and whatever that objects v
 
 This is all **VERY** cool because that means if your code or data change than you can update your entire report very fast. It's also 100% reproducible. We know exactly where every single value in your report comes from. This is all pretty helpful when you want to check your code and report side-by-side. Now that you have a bit more detail fill in the following:
 
-Mean activity for `r "species name here"` in the control group was `r "add code to place mean for control"` (s / min) compared to the OA treatment group, which was `r "mean for acidificaton treatment"` (s / min). The difference between control and OA treatment means was `r "code mean difference bw treatment"` (s / min) (95% CI: `r "code for lower CI"` to `r "code for upper CI"`). 
+Mean activity for `r "Lemon"` in the control group was `r "add code to place mean for control"` (s / min) compared to the OA treatment group, which was `r "mean for acidificaton treatment"` (s / min). The difference between control and OA treatment means was `r "code mean difference bw treatment"` (s / min) (95% CI: `r "code for lower CI"` to `r "code for upper CI"`). 
 
 Now, using what you just learnt, describe what the null hypothesis being tested was and provide statistical evidence (t-statistic, df, and p-value) to support your conclusion about whether we can reject the null hypothesis. Again, make sure you use in-line code. Write you answer below:
 
@@ -272,6 +355,36 @@ Now, using what you just learnt, describe what the null hypothesis being tested 
 
 
 Re-analyse the data for a single species using permutations instead of a t-test. Do your results differ?
+
+```{r, Re-analyse, echo=TRUE, eval=TRUE}
+lemon <- OA_data %>% filter(species=="lemon")
+permutation <- sample(lemon$treatment)
+permutation_data <- lemon
+permutation_data$treatment <- permutation[sample(49,replace = F)]
+head(permutation_data)
+```
+
+```{r,permutations,echo=TRUE, eval=TRUE}
+# Set the number of reps
+n_reps <- 10000
+# Create a vector/list to store the result
+samp_dist <- rep(1,n_reps)
+# Set a loop that sums the number of reps
+for (i in 1:n_reps)
+{
+    # Random assignment to treatment
+    permuted_data <- lemon %>% mutate(treatment = treatment[sample(row_number())])
+    # The results of t-test
+    permuted_test <- t.test(permuted_data$activity[which(permuted_data$treatment=="CO2")],permuted_data$activity[which(permuted_data$treatment=="control")])
+# Loop and sum the results of t-test statistic 
+    samp_dist[i] <- permuted_test$statistic
+}
+# Set a tibble of extreme fraction
+t_test_statistic <- test4$statistic
+plot_tibble <- tibble(value = samp_dist,extreme = (abs(samp_dist) > abs(t_test_statistic)))
+# Draw a histogram
+ggplot(plot_tibble,aes(x=value,fill=extreme))+geom_histogram(bins=200)
+```
 
 >**Stretch Task**:  If you really want a challenge try doing permutation tests for each species. Again, loops, functions or tidyverse (or even combinations might help). 
 
