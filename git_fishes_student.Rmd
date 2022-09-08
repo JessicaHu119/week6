@@ -134,8 +134,9 @@ OA_data <- OA %>% select(species, treatment, animal_id, activity)
 # Check spelling in species and treatment but also generate a summary table
 library(tidyverse)
 OA_data %>% count(species,treatment)
+OA_data1 <- OA_data %>% filter(species !="whitedams") 
 # Use flextable to render the summary table in a tidy format
-OA_new <- OA_data %>%group_by(species, treatment)%>%summarise(mean=mean(activity), sd=sd(activity), number=length(activity))
+OA_new <- OA_data1 %>%group_by(species, treatment)%>%summarise(mean=mean(activity), sd=sd(activity), number=length(activity))
 ft <- flextable(OA_new)
 ft <- theme_vanilla(ft)
 ft <- color(ft, part = "body",color = "#666666")
@@ -161,11 +162,20 @@ Ignoring figures can be important because they take up quite a lot of space in y
 
 ```{r, prettyfig, fig.align='center', fig.cap="add a legend here"}
 # ggplot figure showing mean activity for each treatment (Control, OA) for each species.
-ggplot(OA_data, mapping = aes(x = species,y=activity,fill=treatment)) + geom_boxplot() 
+ggplot(OA_data1, mapping = aes(x = treatment,y=activity,fill=treatment)) + geom_boxplot() + facet_wrap(~species)
 
 ```
 
 **Stretch Task**: The Clark et al. 2020 paper plots some pretty pictures on their figures. You have access to a folder called "pics/". Add the pics of the difference species from the "pics/" folder to your new plot. Explore the function `annotation_raster()` which might help you achieve this goal.
+
+```{r}
+acantho <- readPNG("./data/pics/acantho.png")
+ambon <- readPNG("./data/pics/ambon.png")
+chromis <- readPNG("./data/pics/chromis.png")
+humbug <- readPNG("./data/pics/humbug.png")
+lemon <- readPNG("./data/pics/lemon.png")
+ggplot(OA_data1, mapping = aes(x = species,y=activity,fill=treatment)) + geom_boxplot() + annotation_raster(acantho, 0.5, 1.5, 50, 60, interpolate = FALSE) + annotation_raster(ambon, 1.5, 2.5, 50, 60, interpolate = FALSE) + annotation_raster(chromis, 2.5, 3.5, 50, 60, interpolate = FALSE) + annotation_raster(humbug, 3.5, 4.5, 50, 60, interpolate = FALSE) + annotation_raster(lemon, 4.5, 5.5, 50, 60, interpolate = FALSE) 
+```
 
 Note the code chunk used to make the figure. It has a `fig.cap` argument. That means Rmarkdown knows it's a figure and it will allow you to create a figure reference call. In other words, we can refer to our Figure \@ref(fig:prettyfig) by referring to the label for the chunk. This will automatically make a legend for us too (assuming you add one in). The same concept applied to Tables but the legend goes above these.
 
