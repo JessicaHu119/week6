@@ -3,7 +3,7 @@
     "path": "D:/HSQ/Lecture/ANU/2022 sem2/Data Science for Biologists/workshop6/week6/git_fishes_student.Rmd",
     "project_path": "git_fishes_student.Rmd",
     "type": "r_markdown",
-    "hash": "622059288",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1662376136864.0,
@@ -12,16 +12,16 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "203,0",
-        "scrollLine": "198",
+        "cursorPosition": "230,0",
+        "scrollLine": "226",
         "last_setup_crc32": "9736CA91d571bbe7"
     },
     "folds": "",
-    "lastKnownWriteTime": 1662605072,
+    "lastKnownWriteTime": 1662607293,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1662605072194,
+    "last_content_update": 1662607293123,
     "read_only": false,
     "read_only_alternatives": []
 }
