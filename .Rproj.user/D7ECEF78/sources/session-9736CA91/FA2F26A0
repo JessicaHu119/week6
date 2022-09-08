@@ -3,7 +3,7 @@
     "path": "D:/HSQ/Lecture/ANU/2022 sem2/Data Science for Biologists/workshop6/week6/.gitignore",
     "project_path": ".gitignore",
     "type": "gitignore",
-    "hash": "3037664414",
+    "hash": "274867687",
     "contents": "",
     "dirty": false,
     "created": 1662605197179.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "0,0",
+        "cursorPosition": "4,0",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1662605246,
+    "lastKnownWriteTime": 1662605451,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1662605246265,
+    "last_content_update": 1662605451688,
     "read_only": false,
     "read_only_alternatives": []
 }
