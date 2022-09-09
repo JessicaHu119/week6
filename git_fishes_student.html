@@ -11,7 +11,7 @@
 
 <meta name="author" content="&lt;Shiqi Hu and u7457284 +++&gt;" />
 
-<meta name="date" content="2022-09-08" />
+<meta name="date" content="2022-09-09" />
 
 <title>Git, GitHub &amp; Ocean Acidification</title>
 
@@ -1587,7 +1587,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Git, GitHub &amp; Ocean Acidification</h1>
 <h4 class="author">&lt;Shiqi Hu and u7457284 +++&gt;</h4>
-<h4 class="date">2022-09-08</h4>
+<h4 class="date">2022-09-09</h4>
 
 </div>
 
@@ -1624,7 +1624,7 @@ p_load(bookdown, tidyverse, ggforce, flextable, latex2exp, png, magick) # basica
 <blockquote>
 <p><strong>Question 2</strong>: In the second code block called <code>answer1</code> if we change echo = TRUE to echo = FALSE what will happen to the code block <code>answer1</code> when you render it?</p>
 </blockquote>
-<pre class="r"><code># When we change &#39;echo = TURE&#39; to &#39;echo = FALSE&#39;, the final document will not show the code, only the results and images of the code run. &#39;Echo = TURE&#39; will show all the code as well as the results, but &#39;echo = FALSE&#39; will hide the code.</code></pre>
+<pre class="r"><code># When we change &#39;echo = TURE&#39; to &#39;echo = FALSE&#39;, the final document will not show the code. &#39;Echo = TURE&#39; will show all the code, but &#39;echo = FALSE&#39; will hide the code.</code></pre>
 <p><strong>Important</strong>: Notice that <code>eval = FALSE</code> for many code chunks. When you complete the tasks. Make sure to change these to <code>TRUE</code> otherwise you will find your code does not run!</p>
 </div>
 <div id="task-3" class="section level1">
@@ -1704,12 +1704,12 @@ ggsave(&quot;./output/figures/difference.png&quot;,width = 10, height = 4)</code
 <blockquote>
 <p><strong>Question 6</strong>: Given that you have added <code>output/figures/</code> to your <code>.gitignore</code> file describe what you notice about what you see in <em>GitHub Desktop</em>.</p>
 </blockquote>
-<pre class="r"><code>## Write your answer here</code></pre>
+<pre class="r"><code>## The path to my image `output/figures/` appears in &#39;.gitignore&#39;, while two png files appear in GitHub Desktop. I uploaded them and found a corresponding change in &#39;.gitignore&#39;, but did not find the two png files in GitHub.</code></pre>
 <p>Last question for this task. I promise! It’s important to think very carefully about what you track and ignore.</p>
 <blockquote>
 <p><strong>Question 7</strong>: Assume that you added the <code>pics/</code> folder to your working directory to plot pictures of each fish on your figure. Do you want to track the files in the pic/ folder on GitHub despite them being .png files? Explain your reasoning.</p>
 </blockquote>
-<pre class="r"><code>## Add your answer here</code></pre>
+<pre class="r"><code>## I want to keep track of the files in the pic/ folder on GitHub, even though they are .png files. Because I want other people, including my peers, to be able to find these files when they run my code on GitHub, otherwise they won&#39;t be able to get the drawing with the png image that I&#39;m running.</code></pre>
 </div>
 <div id="task-6" class="section level1">
 <h1><strong>Task 6</strong></h1>
@@ -1745,31 +1745,39 @@ OA_sim</code></pre>
 <pre class="r"><code>#Ambon
 OA_1 &lt;- OA_data %&gt;% filter(species==&quot;ambon&quot;)
 test1 &lt;- t.test(OA_1$activity[which(OA_data$treatment == &quot;CO2&quot;)], OA_1$activity[which(OA_data$treatment == &quot;control&quot;)])
+mean.difference1 &lt;- abs(OA_1 %&gt;% filter(treatment == &quot;CO2&quot;) %&gt;% summarise(mean=mean(activity))-OA_1 %&gt;% filter(treatment == &quot;control&quot;)%&gt;% summarise(mean=mean(activity)))
 
 #Acantho
 OA_2 &lt;- OA_data %&gt;% filter(species==&quot;acantho&quot;)
 test2 &lt;- t.test(OA_2$activity[which(OA_data$treatment == &quot;CO2&quot;)], OA_2$activity[which(OA_data$treatment == &quot;control&quot;)])
+mean.difference2 &lt;- abs(OA_2 %&gt;% filter(treatment == &quot;CO2&quot;) %&gt;% summarise(mean=mean(activity))-OA_2 %&gt;% filter(treatment == &quot;control&quot;)%&gt;% summarise(mean=mean(activity)))
 
 #Chromis
 OA_3 &lt;- OA_data %&gt;% filter(species==&quot;chromis&quot;)
 OA_3C &lt;- OA_3 %&gt;% filter(treatment==&quot;CO2&quot;)
 OA_3t &lt;- OA_3 %&gt;% filter(treatment==&quot;control&quot;)
 test3 &lt;- t.test(OA_3C$activity, OA_3t$activity)
+mean.difference3 &lt;- abs(OA_3C %&gt;% summarise(mean=mean(activity))-OA_3t %&gt;% summarise(mean=mean(activity)))
 
 #Lemon
 OA_4 &lt;- OA_data %&gt;% filter(species==&quot;lemon&quot;)
 test4 &lt;- t.test(OA_4$activity[which(OA_data$treatment == &quot;CO2&quot;)], OA_4$activity[which(OA_data$treatment == &quot;control&quot;)])
-
-#Humbug
-OA_5 &lt;- OA_data %&gt;% filter(species==&quot;humbug&quot;)
-test5 &lt;- t.test(OA_2$activity[which(OA_data$treatment == &quot;CO2&quot;)], OA_5$activity[which(OA_data$treatment == &quot;control&quot;)])
+mean.difference4 &lt;- abs(OA_4 %&gt;% filter(treatment == &quot;CO2&quot;) %&gt;% summarise(mean=mean(activity))-OA_4 %&gt;% filter(treatment == &quot;control&quot;)%&gt;% summarise(mean=mean(activity)))
 
 #Whitedams
-OA_6 &lt;- OA_data %&gt;% filter(species==&quot;whitedams&quot;)
-test6 &lt;- t.test(OA_6$activity[which(OA_data$treatment == &quot;CO2&quot;)], OA_6$activity[which(OA_data$treatment == &quot;control&quot;)])
+OA_5 &lt;- OA_data %&gt;% filter(species==&quot;whitedams&quot;)
+test5 &lt;- t.test(OA_5$activity[which(OA_data$treatment == &quot;CO2&quot;)], OA_5$activity[which(OA_data$treatment == &quot;control&quot;)])
+mean.difference5 &lt;- abs(OA_5 %&gt;% filter(treatment == &quot;CO2&quot;) %&gt;% summarise(mean=mean(activity))-OA_5 %&gt;% filter(treatment == &quot;control&quot;)%&gt;% summarise(mean=mean(activity)))
+
+#Humbug
+OA_6CO2 &lt;- OA_data %&gt;% filter(species==&quot;humbug&quot; &amp; treatment==&quot;CO2&quot;) %&gt;% select(activity)
+OA_6C &lt;- OA_data %&gt;% filter(species==&quot;humbug&quot;&amp;treatment==&quot;control&quot;)%&gt;% select(activity)
+test6 &lt;- t.test(OA_6CO2, OA_6C)
+mean.difference6 &lt;- abs(OA_6CO2 %&gt;% summarise(mean=mean(activity))-OA_6C %&gt;% summarise(mean=mean(activity)))
 
 #mean difference
-mean.difference &lt;- c(test1$null.value,test2$null.value,test3$null.value,test4$null.value,test5$null.value,test6$null.value)
+mean &lt;- data.frame(mean.difference1,mean.difference2,mean.difference3,mean.difference4,mean.difference5,mean.difference6)
+mean.difference &lt;- pivot_longer(mean, cols = starts_with(&quot;mean&quot;),names_to = &quot;mean&quot;)
 
 #min.confidence
 min.confidence &lt;- c(min(test1$conf.int),min(test2$conf.int),min(test3$conf.int),min(test4$conf.int),min(test5$conf.int),min(test6$conf.int))
@@ -1786,7 +1794,9 @@ df &lt;- c(test1$parameter,test2$parameter,test3$parameter,test4$parameter,test5
 #p value
 p.value &lt;- c(test1$p.value, test2$p.value, test3$p.value, test4$p.value, test5$p.value, test6$p.value)
 
-test &lt;- data.frame(species, mean.difference, min.confidence, max.confidence,  t.statistic, df, p.value)</code></pre>
+species &lt;- c(&#39;ambon&#39;,&#39;acantho&#39;,&#39;chromis&#39;,&#39;lemon&#39;,&#39;whitedams&#39;,&#39;humbug&#39;)
+
+test &lt;- data.frame(species, mean.difference$value, min.confidence, max.confidence,  t.statistic, df, p.value)</code></pre>
 <blockquote>
 <p><strong>Stretch Task</strong>: You can of course do this for each species seperately, but those who want a challenge, think about how you might use a loop or even some wrangling methods you have already learnt from the tidyverse to run these tests across all 6 species in a single block of code. If you’re familiar with functions, you can even think about writing your own function! All these strategies will avoid having to copy and paste large chunks of code. If you’re repeating anything, writing functions and loops are good ways to simplify.</p>
 </blockquote>
@@ -1803,23 +1813,23 @@ pval &lt;- c()
 for (i in 1:n_reps) {
   OA_control &lt;- OA_data %&gt;% filter(species == data_species[i] &amp; treatment == &quot;control&quot;)
   OA_CO2 &lt;- OA_data %&gt;% filter(species == data_species[i] &amp; treatment == &quot;CO2&quot;)
-  difference[i] &lt;- t.test(OA_control$activity,OA_CO2$activity)$null.value
+  difference[i] &lt;- abs((OA_data %&gt;% filter(species==data_species[i] &amp; treatment== &quot;control&quot;) %&gt;% summarise(mean = mean(activity)))-(OA_data %&gt;% filter(species==data_species[i]&amp; treatment== &quot;CO2&quot;) %&gt;% summarise(mean = mean(activity))))
   min.conf[i] &lt;- min(t.test(OA_control$activity,OA_CO2$activity)$conf.int)
   max.conf[i] &lt;- max(t.test(OA_control$activity,OA_CO2$activity)$conf.int)
   sta[i] &lt;- t.test(OA_control$activity,OA_CO2$activity)$statistic
   df[i] &lt;- t.test(OA_control$activity,OA_CO2$activity)$parameter
   pval[i] &lt;- t.test(OA_control$activity,OA_CO2$activity)$p.value
 }
-difference 
+difference &lt;- unlist(difference)
 min.conf 
 max.conf
 sta 
 df 
 pval 
-test_loop &lt;- data_frame(species,mean_difference,min.conf,max.conf,sta,df,pval)</code></pre>
+test_loop &lt;- data_frame(data_species,difference,min.conf,max.conf,sta,df,pval)</code></pre>
 <pre class="r"><code># Using the resulting object created above, which should be a table with all the summary statistics, t, df and p-value for each species create a table. Note that there is a tab.cap argument in the chunk arguments. Write a caption here. 
 
-test_loop &lt;- data_frame(species,mean_difference,min.conf,max.conf,sta,df,pval)
+test_loop &lt;- data_frame(data_species,difference,min.conf,max.conf,sta,df,pval)
 table1 &lt;- flextable(test_loop)
 table1 &lt;- theme_vanilla(table1)
 table1 &lt;- color(table1, part = &quot;body&quot;,color = &quot;#666666&quot;)
@@ -1832,15 +1842,44 @@ table1</code></pre>
 <p>You can write your blurb below this. Before you do that, a few cool features of Rmarkdown. You can actually code in objects so that, when they are rendered they replace the inline code chunk with the result. To give you an example, an inline code chunk is written as follows: add code here. When you render the document, whatever you place in the “add code here” section will be rendered. In this case, we are giving a string, so it simply just adds that in the place where the code is, render and see for yourself.</p>
 <p>Moving forward on that you can also add in an object and whatever that objects value is will also be spit out. For example, consider the following: 10. What will happen? Well, it will place in the value 10 when rendered. Again, if you don’t believe me, check for yourself by rendering the document.</p>
 <p>This is all <strong>VERY</strong> cool because that means if your code or data change than you can update your entire report very fast. It’s also 100% reproducible. We know exactly where every single value in your report comes from. This is all pretty helpful when you want to check your code and report side-by-side. Now that you have a bit more detail fill in the following:</p>
-<p>Mean activity for Lemon in the control group was add code to place mean for control (s / min) compared to the OA treatment group, which was mean for acidificaton treatment (s / min). The difference between control and OA treatment means was code mean difference bw treatment (s / min) (95% CI: code for lower CI to code for upper CI).</p>
+<p>Mean activity for Lemon in the control group was test4<span class="math inline">\(estimate[mean of x] (s / min) compared to the OA treatment group, which was test4\)</span>estimate[mean of y] (s / min). The difference between control and OA treatment means was abs(test4<span class="math inline">\(estimate[mean of x]-test4\)</span>estimate[mean of y])
+(s / min) (95% CI: min(test4<span class="math inline">\(conf.int) to max(test4\)</span>conf.int)code for upper CI”`).</p>
 <p>Now, using what you just learnt, describe what the null hypothesis being tested was and provide statistical evidence (t-statistic, df, and p-value) to support your conclusion about whether we can reject the null hypothesis. Again, make sure you use in-line code. Write you answer below:</p>
-<p><strong>Write your answer here</strong></p>
+<p><strong>Write your answer here</strong>
+The species I chose was Lemon. The null hypothesis was that there was no significant difference in mean between the control and CO2 experimental groups for Lemon. According to the above t. test about A, I calculated that its t-statistic is test4<span class="math inline">\(statistic, df is test4\)</span>parameter, and p-value is test4<span class="math inline">\(p.value. The p-value is test4\)</span>p.value, which is greater than 0.05, indicating that we have to accept our null hypothesis that in species Lemon, there is no significant difference in mean between the experimental results of both the control and CO2 experimental groups. I also calculated the difference between the mean of the experimental and control groups, and it has an absolute value of mean.difference4$mean.</p>
 <p>Re-analyse the data for a single species using permutations instead of a t-test. Do your results differ?</p>
+<pre class="r"><code>lemon &lt;- OA_data %&gt;% filter(species==&quot;lemon&quot;)
+permutation &lt;- sample(lemon$treatment)
+permutation_data &lt;- lemon
+permutation_data$treatment &lt;- permutation[sample(49,replace = F)]
+head(permutation_data)</code></pre>
+<pre class="r"><code># Set the number of reps
+n_reps &lt;- 10000
+# Create a vector/list to store the result
+samp_dist &lt;- rep(0,n_reps)
+# Set a loop that sums the number of reps
+for (i in 1:n_reps)
+{
+    # Random assignment to treatment
+    permuted_data &lt;- lemon %&gt;% mutate(treatment = treatment[sample(row_number())])
+    # The results of t-test
+    permuted_test &lt;- t.test(permuted_data$activity[which(permuted_data$treatment==&quot;CO2&quot;)],permuted_data$activity[which(permuted_data$treatment==&quot;control&quot;)])
+# Loop and sum the results of t-test statistic 
+    samp_dist[i] &lt;- permuted_test$statistic
+}
+# Set a tibble of extreme fraction
+t_test_statistic &lt;- test4$statistic
+plot_tibble &lt;- tibble(value = samp_dist,extreme = (abs(samp_dist) &gt; abs(t_test_statistic)))
+# Draw a histogram
+ggplot(plot_tibble,aes(x=value,fill=extreme))+geom_histogram(bins=200)</code></pre>
+<pre class="r"><code>permutated_pvalue &lt;- sum(plot_tibble$extreme)/n_reps
+t_test_results &lt;- test4$p.value
+tibble(permutated_pvalue,t_test_results)</code></pre>
+<p>As shown in the results of the code above, we derived a p-value of 0.052 for the permutation test and a p-value of 0.054 for the t. test. our null hypothesis is that there is no significant difference in mean between the treatments. Because the difference in p-values is not significant, we accept the null hypothesis that there is no significant difference in mean between treatments.</p>
 <blockquote>
 <p><strong>Stretch Task</strong>: If you really want a challenge try doing permutation tests for each species. Again, loops, functions or tidyverse (or even combinations might help).</p>
 </blockquote>
 <pre class="r"><code># Add your code here.</code></pre>
-<p>Below. Add a few sentences for the species (or multiple species) you talked about above to describe the permutation results:</p>
 <p><strong>Add your text and inline code chunks here</strong></p>
 </div>
 <div id="task-10" class="section level1">

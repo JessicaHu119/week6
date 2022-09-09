@@ -65,7 +65,7 @@ Before moving on you might have noticed that the code block above has a name `an
 >**Question 2**: In the second code block called `answer1` if we change echo = TRUE to echo = FALSE what will happen to the code block `answer1` when you render it?
 
 ```{r answer2, echo=TRUE, eval = FALSE}
-# When we change 'echo = TURE' to 'echo = FALSE', the final document will not show the code, only the results and images of the code run. 'Echo = TURE' will show all the code as well as the results, but 'echo = FALSE' will hide the code.
+# When we change 'echo = TURE' to 'echo = FALSE', the final document will not show the code. 'Echo = TURE' will show all the code, but 'echo = FALSE' will hide the code.
 ```
 
 **Important**: Notice that `eval = FALSE` for many code chunks. When you complete the tasks. Make sure to change these to `TRUE` otherwise you will find your code does not run!
@@ -190,7 +190,7 @@ ggsave("./output/figures/difference.png",width = 10, height = 4)
 >**Question 6**: Given that you have added `output/figures/` to your `.gitignore` file describe what you notice about what you see in *GitHub Desktop*. 
 
 ```{r}
-## Write your answer here
+## The path to my image `output/figures/` appears in '.gitignore', while two png files appear in GitHub Desktop. I uploaded them and found a corresponding change in '.gitignore', but did not find the two png files in GitHub.
 ```
 
 Last question for this task. I promise! It's important to think very carefully about what you track and ignore.
@@ -198,7 +198,7 @@ Last question for this task. I promise! It's important to think very carefully a
 >**Question 7**: Assume that you added the `pics/` folder to your working directory to plot pictures of each fish on your figure. Do you want to track the files in the pic/ folder on GitHub despite them being .png files? Explain your reasoning. 
 
 ```{r, answer6}
-## Add your answer here
+## I want to keep track of the files in the pic/ folder on GitHub, even though they are .png files. Because I want other people, including my peers, to be able to find these files when they run my code on GitHub, otherwise they won't be able to get the drawing with the png image that I'm running.
 ```
 
 # **Task 6**
@@ -247,32 +247,39 @@ Here, run some statistical tests to determine, for each species, whether the con
 #Ambon
 OA_1 <- OA_data %>% filter(species=="ambon")
 test1 <- t.test(OA_1$activity[which(OA_data$treatment == "CO2")], OA_1$activity[which(OA_data$treatment == "control")])
+mean.difference1 <- abs(OA_1 %>% filter(treatment == "CO2") %>% summarise(mean=mean(activity))-OA_1 %>% filter(treatment == "control")%>% summarise(mean=mean(activity)))
 
 #Acantho
 OA_2 <- OA_data %>% filter(species=="acantho")
 test2 <- t.test(OA_2$activity[which(OA_data$treatment == "CO2")], OA_2$activity[which(OA_data$treatment == "control")])
+mean.difference2 <- abs(OA_2 %>% filter(treatment == "CO2") %>% summarise(mean=mean(activity))-OA_2 %>% filter(treatment == "control")%>% summarise(mean=mean(activity)))
 
 #Chromis
 OA_3 <- OA_data %>% filter(species=="chromis")
 OA_3C <- OA_3 %>% filter(treatment=="CO2")
 OA_3t <- OA_3 %>% filter(treatment=="control")
 test3 <- t.test(OA_3C$activity, OA_3t$activity)
+mean.difference3 <- abs(OA_3C %>% summarise(mean=mean(activity))-OA_3t %>% summarise(mean=mean(activity)))
 
 #Lemon
 OA_4 <- OA_data %>% filter(species=="lemon")
 test4 <- t.test(OA_4$activity[which(OA_data$treatment == "CO2")], OA_4$activity[which(OA_data$treatment == "control")])
+mean.difference4 <- abs(OA_4 %>% filter(treatment == "CO2") %>% summarise(mean=mean(activity))-OA_4 %>% filter(treatment == "control")%>% summarise(mean=mean(activity)))
 
 #Whitedams
 OA_5 <- OA_data %>% filter(species=="whitedams")
 test5 <- t.test(OA_5$activity[which(OA_data$treatment == "CO2")], OA_5$activity[which(OA_data$treatment == "control")])
+mean.difference5 <- abs(OA_5 %>% filter(treatment == "CO2") %>% summarise(mean=mean(activity))-OA_5 %>% filter(treatment == "control")%>% summarise(mean=mean(activity)))
 
 #Humbug
 OA_6CO2 <- OA_data %>% filter(species=="humbug" & treatment=="CO2") %>% select(activity)
-OA_6C <- OA_6 %>% filter(species=="humbug"&treatment=="control")%>% select(activity)
+OA_6C <- OA_data %>% filter(species=="humbug"&treatment=="control")%>% select(activity)
 test6 <- t.test(OA_6CO2, OA_6C)
+mean.difference6 <- abs(OA_6CO2 %>% summarise(mean=mean(activity))-OA_6C %>% summarise(mean=mean(activity)))
 
 #mean difference
-mean.difference <- c(test1$null.value,test2$null.value,test3$null.value,test4$null.value,test5$null.value,test6$null.value)
+mean <- data.frame(mean.difference1,mean.difference2,mean.difference3,mean.difference4,mean.difference5,mean.difference6)
+mean.difference <- pivot_longer(mean, cols = starts_with("mean"),names_to = "mean")
 
 #min.confidence
 min.confidence <- c(min(test1$conf.int),min(test2$conf.int),min(test3$conf.int),min(test4$conf.int),min(test5$conf.int),min(test6$conf.int))
@@ -289,7 +296,9 @@ df <- c(test1$parameter,test2$parameter,test3$parameter,test4$parameter,test5$pa
 #p value
 p.value <- c(test1$p.value, test2$p.value, test3$p.value, test4$p.value, test5$p.value, test6$p.value)
 
-test <- data.frame(species, mean.difference, min.confidence, max.confidence,  t.statistic, df, p.value)
+species <- c('ambon','acantho','chromis','lemon','whitedams','humbug')
+
+test <- data.frame(species, mean.difference$value, min.confidence, max.confidence,  t.statistic, df, p.value)
 ```
 
 
@@ -343,20 +352,23 @@ Now that you have a table, you can reference it within a document. For example, 
 
 You can write your blurb below this. Before you do that, a few cool features of Rmarkdown. You can actually code in objects so that, when they are rendered they replace the inline code chunk with the result. To give you an example, an inline code chunk is written as follows: `r "add code here"`. When you render the document, whatever you place in the "add code here" section will be rendered. In this case, we are giving a string, so it simply just adds that in the place where the code is, render and see for yourself.  
 
+
 Moving forward on that you can also add in an object and whatever that objects value is will also be spit out. For example, consider the following: `r x = 10; x`. What will happen? Well, it will place in the value 10 when rendered. Again, if you don't believe me, check for yourself by rendering the document. 
 
 This is all **VERY** cool because that means if your code or data change than you can update your entire report very fast. It's also 100% reproducible. We know exactly where every single value in your report comes from. This is all pretty helpful when you want to check your code and report side-by-side. Now that you have a bit more detail fill in the following:
 
-Mean activity for `r "Lemon"` in the control group was `r "add code to place mean for control"` (s / min) compared to the OA treatment group, which was `r "mean for acidificaton treatment"` (s / min). The difference between control and OA treatment means was `r "code mean difference bw treatment"` (s / min) (95% CI: `r "code for lower CI"` to `r "code for upper CI"`). 
+Mean activity for `r "Lemon"` in the control group was `r "test4$estimate[mean of x]"` (s / min) compared to the OA treatment group, which was `r "test4$estimate[mean of y]"` (s / min). The difference between control and OA treatment means was `r "abs(test4$estimate[mean of x]-test4$estimate[mean of y])
+"` (s / min) (95% CI: `r "min(test4$conf.int)"` to `r "max(test4$conf.int)"`code for upper CI"`). 
 
 Now, using what you just learnt, describe what the null hypothesis being tested was and provide statistical evidence (t-statistic, df, and p-value) to support your conclusion about whether we can reject the null hypothesis. Again, make sure you use in-line code. Write you answer below:
 
 **Write your answer here**
+The species I chose was `r "Lemon"`. The null hypothesis was that there was no significant difference in mean between the control and CO2 experimental groups for `r "Lemon"`. According to the above t. test about A, I calculated that its t-statistic is `r "test4$statistic"`, df is `r "test4$parameter"`, and p-value is `r "test4$p.value"`. The p-value is `r "test4$p.value"`, which is greater than 0.05, indicating that we have to accept our null hypothesis that in species `r "Lemon"`, there is no significant difference in mean between the experimental results of both the control and CO2 experimental groups. I also calculated the difference between the mean of the experimental and control groups, and it has an absolute value of `r "mean.difference4$mean"`.
 
 
 Re-analyse the data for a single species using permutations instead of a t-test. Do your results differ?
 
-```{r, Re-analyse, echo=TRUE, eval=TRUE}
+```{r, Re-analyse, echo=TRUE, eval=FALSE}
 lemon <- OA_data %>% filter(species=="lemon")
 permutation <- sample(lemon$treatment)
 permutation_data <- lemon
@@ -364,11 +376,11 @@ permutation_data$treatment <- permutation[sample(49,replace = F)]
 head(permutation_data)
 ```
 
-```{r,permutations,echo=TRUE, eval=TRUE}
+```{r,permutations,echo=TRUE, eval=FALSE}
 # Set the number of reps
 n_reps <- 10000
 # Create a vector/list to store the result
-samp_dist <- rep(1,n_reps)
+samp_dist <- rep(0,n_reps)
 # Set a loop that sums the number of reps
 for (i in 1:n_reps)
 {
@@ -386,13 +398,20 @@ plot_tibble <- tibble(value = samp_dist,extreme = (abs(samp_dist) > abs(t_test_s
 ggplot(plot_tibble,aes(x=value,fill=extreme))+geom_histogram(bins=200)
 ```
 
+```{r,p.value,echo=TRUE, eval=FALSE}
+permutated_pvalue <- sum(plot_tibble$extreme)/n_reps
+t_test_results <- test4$p.value
+tibble(permutated_pvalue,t_test_results)
+```
+As shown in the results of the code above, we derived a p-value of 0.052 for the permutation test and a p-value of 0.054 for the t. test. our null hypothesis is that there is no significant difference in mean between the treatments. Because the difference in p-values is not significant, we accept the null hypothesis that there is no significant difference in mean between treatments.
+
 >**Stretch Task**:  If you really want a challenge try doing permutation tests for each species. Again, loops, functions or tidyverse (or even combinations might help). 
 
 ```{r, stretch2, echo=TRUE, eval=FALSE}
 # Add your code here.
 ```
 
-Below. Add a few sentences for the species (or multiple species) you talked about above to describe the permutation results:
+ 
 
 **Add your text and inline code chunks here**
 
