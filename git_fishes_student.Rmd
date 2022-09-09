@@ -190,7 +190,7 @@ ggsave("./output/figures/difference.png",width = 10, height = 4)
 >**Question 6**: Given that you have added `output/figures/` to your `.gitignore` file describe what you notice about what you see in *GitHub Desktop*. 
 
 ```{r}
-## The path to my image `output/figures/` appears in '.gitignore', while two png files appear in GitHub Desktop. I uploaded them and found a corresponding change in '.gitignore', but did not find the two png files in GitHub.
+## The path to my image `output/figures/` appears in '.gitignore', while two png files appear in GitHub Desktop.  Because the path to the image is hidden on '.gitignore', the web site will hide my image.
 ```
 
 Last question for this task. I promise! It's important to think very carefully about what you track and ignore.
