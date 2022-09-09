@@ -2,4 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-output/figures/
+output/figures/difference.png
+output\figures\difference.png
